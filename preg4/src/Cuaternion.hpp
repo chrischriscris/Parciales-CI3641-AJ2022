@@ -9,7 +9,6 @@
 #ifndef CUATERNION_HPP
 #define CUATERNION_HPP
 #include <iostream>
-using namespace std;
 
 /**
  * Clase que modela el cuaternión.
