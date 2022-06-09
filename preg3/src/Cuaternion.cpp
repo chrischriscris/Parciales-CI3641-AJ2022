@@ -87,11 +87,6 @@ bool Cuaternion::operator==(const Cuaternion &other) const {
     return a == other.a && b == other.b && c == other.c && d == other.d;
 }
 
-// ostream& operator<<(ostream& os, Cuaternion const& value) {
-//     os << a << " + " << b << "i + " << c << "j +" << d << "k";
-//     return os;
-// }
-
 void Cuaternion::print() {
     cout << a << " + " << b << "i + " << c << "j + " << d << "k" << endl;
 }
