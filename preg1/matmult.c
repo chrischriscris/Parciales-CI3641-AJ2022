@@ -45,6 +45,7 @@ li **read_mat(ul n, ul m) {
 
     return mat;
 }
+
 /**
  * mult_mat - Multiplica dos matrices de long int de tamaño nxm y mxp,
  * respectivamente.
@@ -107,7 +108,7 @@ void print_mat(li **A, ul n, ul m) {
  */
 int main(int argc, char *argv[]) {
     // Obtiene los tamaños de N, M y P
-    ul n = 0, m = 0, p = 0;
+    ul n, m, p;
     scanf("%lu %lu %lu", &n, &m, &p);
 
     printf("La dimensión de A es: %lux%lu\n", n, m);
