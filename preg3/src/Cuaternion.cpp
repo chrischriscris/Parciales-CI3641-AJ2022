@@ -46,7 +46,7 @@ Cuaternion::Cuaternion() {
     this->d = 0;
 }
 
-Cuaternion Cuaternion::operator+(Cuaternion &other) {
+Cuaternion Cuaternion::operator+(const Cuaternion &other) {
     return Cuaternion(a + other.a, b + other.b, c + other.c, d + other.d);
 }
 
@@ -62,7 +62,7 @@ Cuaternion Cuaternion::operator~() {
     return Cuaternion(a, -b, -c, -d);
 }
 
-Cuaternion Cuaternion::operator*(Cuaternion &other) {
+Cuaternion Cuaternion::operator*(const Cuaternion &other) {
     return Cuaternion(
         a*other.a - b*other.b - c*other.c - d*other.d,
         a*other.b + b*other.a + c*other.d - d*other.c,
@@ -72,41 +72,26 @@ Cuaternion Cuaternion::operator*(Cuaternion &other) {
 }
 
 Cuaternion Cuaternion::operator*(double other) {
-    return Cuaternion(
-        a*other - b*other - c*other - d*other,
-        a*other + b*other + c*other - d*other,
-        a*other - b*other + c*other + d*other,
-        a*other + b*other - c*other + d*other
-    );
+    return Cuaternion(a*other, b*other, c*other, d*other);
 }
 
 Cuaternion Cuaternion::operator*(int other) {
-    return Cuaternion(
-        a*other - b*other - c*other - d*other,
-        a*other + b*other + c*other - d*other,
-        a*other - b*other + c*other + d*other,
-        a*other + b*other - c*other + d*other
-    );
+    return Cuaternion(a*other, b*other, c*other, d*other);
 }
 
 double Cuaternion::operator&() {
     return sqrt(a*a + b*b + c*c + d*d);
 }
 
-void Cuaternion::print() {
-    cout << a << " + " << b << "i + " << c << "j +" << d << "k" << endl;
-}
-
-bool Cuaternion::operator==(Cuaternion other) const {
+bool Cuaternion::operator==(const Cuaternion &other) const {
     return a == other.a && b == other.b && c == other.c && d == other.d;
 }
 
-// int main() {
-//     // Crea cuaternión
-//     Cuaternion a = Cuaternion();
-//     a.print();
-    
-//     cout << "Norma de a = " << &a << endl;
-
-//     return 0;
+// ostream& operator<<(ostream& os, Cuaternion const& value) {
+//     os << a << " + " << b << "i + " << c << "j +" << d << "k";
+//     return os;
 // }
+
+void Cuaternion::print() {
+    cout << a << " + " << b << "i + " << c << "j + " << d << "k" << endl;
+}

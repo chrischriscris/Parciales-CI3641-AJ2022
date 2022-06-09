@@ -1,13 +1,13 @@
 CC = g++
 CFLAGS = -Wall
 
-all: cuaternion
+all: src/Cuaternion.o runtests
 
-cuaternion: cuaternion.o
-	$(CC) $(CFLAGS) -o cuaternion Cuaternion.o
+runtests: tests/tests.cpp src/Cuaternion.o
+	$(CC) $(CFLAGS) -o runtests tests/tests.cpp src/Cuaternion.o
 
-cuaternion.o: src/Cuaternion.hpp
-	$(CC) $(CFLAGS) -c src/Cuaternion.cpp
+src/Cuaternion.o: src/Cuaternion.cpp
+	$(CC) $(CFLAGS) -c src/Cuaternion.cpp -o src/Cuaternion.o
 
 clean:
-	rm *.o cuaternion
+	rm src/*.o runtests
