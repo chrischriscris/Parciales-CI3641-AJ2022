@@ -1,14 +1,13 @@
-CPPC = g++
+CC = g++
 CFLAGS = -Wall
 
-all:
-	$(CPPC) $(CFLAGS) -o main Cuaternion.cpp
+all: cuaternion
 
-matmult: matmult.c
-	$(CPPC) $(CFLAGS) -o matmult matmult.c
+cuaternion: cuaternion.o
+	$(CC) $(CFLAGS) -o cuaternion Cuaternion.o
 
-powermod: powermod.c
-	$(CPPC) $(CFLAGS) -o powermod powermod.c
+cuaternion.o: src/Cuaternion.hpp
+	$(CC) $(CFLAGS) -c src/Cuaternion.cpp
 
 clean:
-	rm powermod matmult
+	rm *.o cuaternion
