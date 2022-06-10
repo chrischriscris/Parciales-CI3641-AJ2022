@@ -1,5 +1,5 @@
 /**
- * CI3825 - Lenguajes de Programación I
+ * CI3641 - Lenguajes de Programación I
  * Pregunta 4
  * 
  * Implementación de la clase Cuaternion.

@@ -1,5 +1,5 @@
 /**
- * CI3825 - Lenguajes de Programación I
+ * CI3641 - Lenguajes de Programación I
  * Pregunta 1.b.i
  * 
  * @author Christopher Gómez (c) 2022

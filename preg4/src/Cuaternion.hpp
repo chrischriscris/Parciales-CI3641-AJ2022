@@ -1,5 +1,5 @@
 /**
- * CI3825 - Lenguajes de Programación I
+ * CI3641 - Lenguajes de Programación I
  * Pregunta 4
  * 
  * Cabecera de la implementación de Cuaternion.
@@ -40,9 +40,7 @@ public:
     Cuaternion operator*(int other);
     double operator&();
     bool operator==(const Cuaternion &other) const;
-    void print();
+    void prnt();
 };
-
-// ostream& operator<<(ostream& os, Cuaternion const& value);
 
 #endif
