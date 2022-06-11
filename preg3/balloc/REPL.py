@@ -122,6 +122,9 @@ class BuddySystemREPL(Cmd):
             self.print_error(f'No existe un bloque con el identicador "{args[0]}".')
 
     def do_MOSTRAR(self, line):
+        if line:
+            return print("Uso: MOSTRAR, use el comando help o ? "
+                "para más información")
         print(f"{self.allocator}")
 
     def do_SALIR(self, line) -> bool:

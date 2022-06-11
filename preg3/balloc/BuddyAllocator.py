@@ -1,6 +1,7 @@
 from __future__ import annotations
-from math import log2, ceil
-from xmlrpc.client import Boolean
+
+from math import ceil, log2
+
 
 class Block:
     '''Implementación de bloque de memoria de Buddy System.
@@ -11,13 +12,15 @@ class Block:
         bucket: Índice del bloque en caso de estar en la lista
             de bloque libres.
     '''
-    def __init__(self: Block, start: int, size: int) -> None:
+    def __init__(self: Block, start: int, size: int):
         self.start = start
         self.size = size
         self.bucket = ceil(log2(size))
 
     def __str__(self: BuddyAllocator) -> str:
-        return f'({self.start}:{self.start + self.size-1})'
+        if self.size == 1:
+            return f'[{self.start}]'
+        return f'[{self.start} - {self.start + self.size-1}]'
     
     def __repr__(self: BuddyAllocator) -> str:
         return self.__str__()
@@ -37,7 +40,7 @@ class BuddyAllocator:
     Argumentos:
         size: Tamaño de la memoria.
     '''
-    def __init__(self: BuddyAllocator, size: int) -> None:
+    def __init__(self: BuddyAllocator, size: int):
         self.n = ceil(log2(size)) + 1
         self.free_blocks = [[] for _ in range(self.n)]
         self.total_size = size
@@ -160,4 +163,20 @@ class BuddyAllocator:
         return True
 
     def __str__(self: BuddyAllocator) -> str:
-        return f"{self.free_blocks}\n{self.blocks_map}"
+        strbuilder = ["=" * 30]
+        if self.free_blocks:
+            strbuilder.append("Lista de bloques libres:\n")
+            for i, block_list in enumerate(self.free_blocks):
+                if block_list:
+                    strbuilder.append(f"Tamaño {2**i}:")
+                    for block in block_list:
+                        strbuilder.append(f"\t{block}")
+
+        if self.blocks_map:
+            strbuilder.append("=" * 30)
+            strbuilder.append("Bloques reservados:\n")
+            for name, block in self.blocks_map.items():
+                strbuilder.append(f"<{name}>\n\t{block}")
+
+        strbuilder.append("=" * 30)
+        return '\n'.join(strbuilder)
