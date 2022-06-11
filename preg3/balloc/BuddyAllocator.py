@@ -34,21 +34,26 @@ class BuddyAllocator:
         n: Número de listas de bloques libres que maneja el sistema.
         free_blocks: Lista bloques libres, el elemento i-ésimo contiene
             los bloques libres de tamaño 2^i.
-        total_size: Tamaño total de la memoria que se maneja.
         blocks_map: Diccionario que lleva cuenta de los bloques asignados
             por su identificador.
     Argumentos:
         size: Tamaño de la memoria.
     '''
     def __init__(self: BuddyAllocator, size: int):
+        if (not isinstance(size, int)      # Entero
+            or size & (size-1) or not size # Potencia de base 2
+            or size < 1                    # Positivo
+        ):
+            raise ValueError("El número de bloques deber ser una potencia de "
+                "base 2 positiva")
+        
         self.n = ceil(log2(size)) + 1
         self.free_blocks = [[] for _ in range(self.n)]
-        self.total_size = size
+        self.blocks_map = {}
 
         # Al comienzo solo está libre un bloque de tamaño
         # maximal que ocupa toda la memoria
         self.free_blocks[self.n - 1].append(Block(0, size))
-        self.blocks_map = {}
 
     def allocate(self: BuddyAllocator, name: str, size: int) -> int:
         '''Asigna un bloque de memoria de tamaño [size] con el identificador
@@ -112,7 +117,7 @@ class BuddyAllocator:
         
         return 0
 
-    def coalesce(self: BuddyAllocator, block: Block) -> Boolean:
+    def coalesce(self: BuddyAllocator, block: Block) -> bool:
         '''Fusiona [block] con su buddy si este está libre.
         
         Retorna:
@@ -139,7 +144,7 @@ class BuddyAllocator:
                 return merged_block
         return block
 
-    def free(self: BuddyAllocator, name: str) -> Boolean:
+    def free(self: BuddyAllocator, name: str) -> bool:
         '''Libera el bloque de memoria con el identificador [name].
 
         Retorna:

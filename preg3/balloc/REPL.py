@@ -1,5 +1,3 @@
-from ast import arg
-import locale
 import os
 from cmd import Cmd
 from textwrap import dedent
