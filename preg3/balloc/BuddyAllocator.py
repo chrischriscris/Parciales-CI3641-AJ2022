@@ -117,6 +117,29 @@ class BuddyAllocator:
         
         return 0
 
+    def free(self: BuddyAllocator, name: str) -> bool:
+        '''Libera el bloque de memoria con el identificador [name].
+
+        Retorna:
+            - True si la operación fue exitosa.
+            - False si no existe un bloque con el identificador [name].
+        '''
+        if name not in self.blocks_map:
+            return False
+
+        block = self.blocks_map[name]
+
+        # Se añade a la lista de bloques libres
+        self.free_blocks[block.bucket].append(block)
+        del self.blocks_map[name]
+
+        # Se mezclan los bloques con su buddy mientra esté libre
+        temp = self.coalesce(block)
+        while temp != block:
+            block, temp = temp, self.coalesce(temp)
+
+        return True
+
     def coalesce(self: BuddyAllocator, block: Block) -> bool:
         '''Fusiona [block] con su buddy si este está libre.
         
@@ -135,8 +158,9 @@ class BuddyAllocator:
                 # Saca los dos bloques de la lista y los mezcla
                 self.free_blocks[block.bucket].pop(i)
                 if (self.free_blocks[block.bucket].pop() != block):
-                    print("CUIDADO")
+                    raise Exception("Error al mezclar los bloques")
 
+                # Se crea el nuevo bloque y se coloca en el siguiente bucket
                 m = min(a, block.start)
                 merged_block = Block(m, 2*block.size)
                 self.free_blocks[block.bucket + 1].append(merged_block)
@@ -144,32 +168,11 @@ class BuddyAllocator:
                 return merged_block
         return block
 
-    def free(self: BuddyAllocator, name: str) -> bool:
-        '''Libera el bloque de memoria con el identificador [name].
-
-        Retorna:
-            - True si la operación fue exitosa.
-            - False si no existe un bloque con el identificador [name].
-        '''
-        if name not in self.blocks_map:
-            return False
-
-        block = self.blocks_map[name]
-
-        # Se añade a la lista de bloques libres
-        self.free_blocks[block.bucket].append(block)
-        self.blocks_map.pop(name)
-
-        # Se mezclan los bloques con su buddy mientra esté libre
-        temp = self.coalesce(block)
-        while temp != block:
-            block, temp = temp, self.coalesce(temp)
-        
-        return True
 
     def __str__(self: BuddyAllocator) -> str:
-        strbuilder = ["=" * 30]
-        if self.free_blocks:
+        strbuilder = []
+        if any(self.free_blocks):
+            strbuilder.append("=" * 30)
             strbuilder.append("Lista de bloques libres:\n")
             for i, block_list in enumerate(self.free_blocks):
                 if block_list:

@@ -99,7 +99,8 @@ class BuddySystemREPL(Cmd):
             self.print_ok(f'{size} bloques de memoria asignados con el '
                 f'identificador "{args[0]}".')
         elif res == 1:
-            self.print_error("No existe un bloque disponible.")
+            self.print_error("No existe un bloque disponible para cumplir la."
+                "petición")
         elif res == 2:
             self.print_error(f'Ya existe un bloque con el identificador "{args[0]}"')
 

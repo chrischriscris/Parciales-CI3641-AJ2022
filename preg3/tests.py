@@ -18,7 +18,7 @@ class TestBuddyInitialization(unittest.TestCase):
 
 class TestBuddyAllocator(unittest.TestCase):
 
-    def test_allocate_and_empty_allocator(self):
+    def test_allocate(self):
         self.allocator = BuddyAllocator(16)
 
         allocate = [4, 4, 4, 4]
@@ -26,18 +26,43 @@ class TestBuddyAllocator(unittest.TestCase):
         free_order = [1, 2, 3, 0]
         
         for name, size in zip(names, allocate):
-            self.assertEquals(
+            self.assertEqual(
                 self.allocator.allocate(name, size),
                 0
             )
         
         for i in free_order:
-            self.assertEquals(
+            self.assertEqual(
                 self.allocator.free(names[i]),
                 True
             )
 
+        # No hay ningún bloque asignado y la memoria solo tiene un bloque
         self.assertDictEqual(self.allocator.blocks_map, {})
+        self.assertEqual(sum(1 for block in self.allocator.free_blocks if block), 1)
+
+    def test_allocate2(self):
+        self.allocator = BuddyAllocator(16)
+
+        allocate = [1]*16
+        names = [f"bloque {randint(0, 10000)}" for _ in allocate]
+        free_order = [0, 2, 4, 6, 8, 10, 12, 14, 15, 13, 11, 9, 7, 5, 3, 1]
+        
+        for name, size in zip(names, allocate):
+            self.assertEqual(
+                self.allocator.allocate(name, size),
+                0
+            )
+        
+        for i in free_order:
+            self.assertEqual(
+                self.allocator.free(names[i]),
+                True
+            )
+        
+        # No hay ningún bloque asignado y la memoria solo tiene un bloque
+        self.assertDictEqual(self.allocator.blocks_map, {})
+        self.assertEqual(sum(1 for block in self.allocator.free_blocks if block), 1)
 
 if __name__ == '__main__':
     unittest.main()
