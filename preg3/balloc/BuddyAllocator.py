@@ -5,7 +5,7 @@ from math import ceil, log2
 
 class Block:
     '''Implementación de bloque de memoria de Buddy System.
-    
+
     Atributos:
         start: Dirección donde comienza el bloque.
         size: Tamaño del bloque.
@@ -102,7 +102,6 @@ class BuddyAllocator:
 
             new_block1 = Block(temp.start, new_size)
             new_block2 = Block(temp.start + new_size, new_size)
-
 
             # Se añaden a la lista de bloques libres
             self.free_blocks[i].append(new_block1)

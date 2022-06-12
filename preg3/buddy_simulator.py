@@ -1,7 +1,7 @@
 """REPL cliente de Buddy Simulator
 """
 
-from sys import argv, exit
+from sys import argv
 from balloc.REPL import BuddySystemREPL
 
 if __name__ == '__main__':

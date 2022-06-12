@@ -36,7 +36,6 @@ class TestBuddyAllocator(unittest.TestCase):
                 self.allocator.free(names[i]),
                 True
             )
-
         # No hay ningún bloque asignado y la memoria solo tiene un bloque
         self.assertDictEqual(self.allocator.blocks_map, {})
         self.assertEqual(sum(1 for block in self.allocator.free_blocks if block), 1)
