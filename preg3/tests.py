@@ -17,7 +17,6 @@ class TestBuddyInitialization(unittest.TestCase):
         self.assertRaises(ValueError, BuddyAllocator, 'nice')
 
 class TestBuddyAllocator(unittest.TestCase):
-
     def test_allocate(self):
         self.allocator = BuddyAllocator(16)
 

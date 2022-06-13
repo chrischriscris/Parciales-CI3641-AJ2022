@@ -5,7 +5,7 @@ from tdiagram.Machine import Machine
 
 class TestMachine(unittest.TestCase):
     def test_session(self):
-        m = Machine()
+        self.m = Machine()
         
         actions = [
             ('program', 'fib', 'LOCAL'),
@@ -29,10 +29,21 @@ class TestMachine(unittest.TestCase):
 
         for el in actions:
             if el[0] == 'program':
-                m.add_program(el[1], el[2])
+                self.m.add_program(el[1], el[2])
             elif el[0] == 'interpreter':
-                m.add_interpreter(el[1], el[2])
+                self.m.add_interpreter(el[1], el[2])
             elif el[0] == 'compiler':
-                m.add_compiler(el[1], el[2], el[3])
+                self.m.add_compiler(el[1], el[2], el[3])
             elif el[0] == 'assert':
-                self.assertEqual(m.is_executable(el[1]), el[2])
+                self.assertEqual(self.m.is_executable(el[1]), el[2])
+
+class TestErrors(unittest.TestCase):
+    def test_err1(self):
+        self.m = Machine()
+        self.assertRaises(ValueError, self.m.add_languages, 'hoal_py')
+        self.assertRaises(ValueError, self.m.add_compiler, 'c++', 'jv_a', 'p_y')
+        self.assertRaises(ValueError, self.m.add_interpreter, 'c-', 'h_o')
+
+    def test_err2(self):
+        self.m = Machine()
+        self.assertRaises(ValueError, self.m.is_executable, 'QUÉ')
