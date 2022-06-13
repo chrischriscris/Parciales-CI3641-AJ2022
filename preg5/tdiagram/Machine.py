@@ -27,15 +27,19 @@ class Digraph():
 
     def has_path(self, _from: str, to: str) -> bool:
         '''Retorna un booleano indicando si existe n camino de [_from] a [to]'''
-        visited = set()
         if _from == to:
             return True
-        
-        visited.add(_from)
-        for node in self.adj[_from]:
+
+        queue = [_from]
+        visited = set()
+        while queue:
+            node = queue.pop(0)
             if node not in visited:
-                if self.has_path(node, to):
-                    return True
+                visited.add(node)
+                for v in self.adj[node]:
+                    if v == to:
+                        return True
+                    queue.append(v)
         return False
 
     def __str__(self):
