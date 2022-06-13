@@ -10,7 +10,7 @@ ii. Multiplicación modular.
 
 Para construir los programas en sistemas operativos basados en Unix, abra la terminal en el directorio donde está el código fuente y escriba:
 
-```
+```shell
 > make
 ```
 
@@ -21,7 +21,7 @@ Se generarán dos ejecutables con los nombres `powermod` y `matmuñt`.
 Es una herramienta simple de línea de comandos que permite calcula la potencia modulada (a^b) mod c, donde a y b son enteros no negativos y c > 2, un ejemplo de su uso es el siguiente:
 
 
-```
+```shell
 > powermod 2 8 250
 (2^8) mod 250 = 6
 ```
@@ -43,7 +43,7 @@ b21 b22 ... b2p
 bm1 bm2 ... bmp
 
 Puede usar de ejemplo `in_matmult1` y  `in_matmult2`, de la siguiente forma:
-```
+```shell
 > matmult < in_matmult2
 La dimensión de A es: 2x3
 La dimensión de B es: 3x2

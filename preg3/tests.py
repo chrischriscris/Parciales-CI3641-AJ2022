@@ -61,6 +61,20 @@ class TestBuddyAllocator(unittest.TestCase):
         # No hay ningún bloque asignado y la memoria solo tiene un bloque
         self.assertDictEqual(self.allocator.blocks_map, {})
         self.assertEqual(sum(1 for block in self.allocator.free_blocks if block), 1)
+    
+    def test_allocate_errors(self):
+        self.allocator = BuddyAllocator(16)
+        self.assertEqual(self.allocator.allocate('n', 17), 1)
+        self.allocator.allocate('n', 8)
+        self.assertEqual(self.allocator.allocate('n', 1), 2)
+        self.allocator.allocate('m', 8)
+        self.assertEqual(self.allocator.allocate('k', 1), 1)
+
+    def test_free_errors(self):
+        self.allocator = BuddyAllocator(16)
+        self.assertFalse(self.allocator.free('n'))
+        self.allocator.allocate('m', 8)
+        self.assertFalse(self.allocator.free('n'))
 
 if __name__ == '__main__':
     unittest.main()
