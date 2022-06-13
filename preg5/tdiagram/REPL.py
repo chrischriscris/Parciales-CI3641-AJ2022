@@ -3,59 +3,64 @@ from cmd import Cmd
 from textwrap import dedent
 from typing import Union
 
-from preg5.tdiagram.DoesItRun import BuddyAllocator
+from tdiagram.Machine import Machine
 
-class BuddySystemREPL(Cmd):
-    """REPL del simulador de Buddy Allocation System.
+
+class MachineREPL(Cmd):
+    """REPL del simulador de Máquina.
     
     Atributos:
-        allocator: Instancia que implemente el Buddy System.
+        vm: Instancia que implementa una máquina con programas,
+            intérpretes y compiladores.
     """
     # Mensajes de la REPL
-    prompt = f'\033[1;32mBuddy System > \033[0m'
-    intro = (f'Buddy Allocation Simulator v1.0\n'
+    prompt = f'Machine Simulator > '
+    intro = (f'Machine Simulator v1.0\n'
         'Utiliza "?" para mostrar los comandos disponibles.')
     doc_header = ('''Lista de comandos basicos (escribe 'help <nombre>' '''
         'para informacion detallada)')
     misc_header = ('''Lista de funciones disponibles (escribe 'help '''
         '''<nombre>' para informacion detallada)''')
 
-    def __init__(self, size: int):
+    def __init__(self):
         # Llama el constructor de la superclase e inicializa la máquina virtual
         Cmd.__init__(self)
-        self.allocator = BuddyAllocator(size)
+        self.vm = Machine()
 
     # ---------- COMANDOS DE DOCUMENTACION DE COMANDOS EN REPL ----------
-    def help_RESERVAR(self):
+    def help_EJECUTABLE(self):
         print(dedent('''
-            RESERVAR <nombre> <número de bloques>
+            EJECUTABLE <nombre>
 
-            Intenta asignar la cantidad de memoria indicada, asociándolo
-            al identificador dado.
+            Representa una consulta de la posibilidad de ejecutar el programa de nombre
+            <nombre>.
 
-            Reporta error e ignora la petición si ya hay un bloque asignado
-            con el mismo identificador o si no existe un espacio libre lo
-            suficientemente grande como para satisfacer la petición usando
-            Buddy System.
+            Reporta un error e ignorar la acción si <nombre> no tiene un
+            programa asociado.
             '''))
 
     def help_LIBERAR(self):
         print(dedent('''
-            LIBERAR <nombre>
+            DEFINIR <tipo> [<argumentos>]
 
-            Libera la memoria asignada al bloque con el identificador dado.
+            Representa una definición de clase <tipo> con <argumentos>, que son:
 
-            Reporta error e ignora la petición si no existe un bloque asignado
-            con el identificador.
+            PROGRAMA <nombre> <lenguaje>
+            Representa a un programa identificado por <nombre> escrito en <lenguaje>.
+            
+            INTERPRETE <lenguaje_base> <lenguaje>
+            Representa a un intérprete para <lenguaje> escrito en <lenguaje_base>.
+            
+            TRADUCTOR <lenguaje_base> <lenguaje_origen> <lenguaje_destino>
+            Representa a un traductor, desde <lenguaje_origen> hacia <lenguaje_destino>,
+            escrito en <lenguaje_base>.
+            
+            Todos los lenguajes deben ser cadenas alfanuméricas
+
+            Reporta un error e ignorar la acción si <nombre> ya tiene un
+            programa asociado, en el caso de programas.
             '''))
     
-    def help_MOSTRAR(self):
-        print(dedent('''
-            MOSTRAR
-
-            Muestra el estado actual de la memoria, mediante una representación
-            textual de la lista de bloques libres y ocupados.
-            '''))
 
     def help_SALIR(self):
         print(dedent('''
@@ -70,61 +75,70 @@ class BuddySystemREPL(Cmd):
         print(self.intro)
         while True:
             try:
-                super(BuddySystemREPL, self).cmdloop(intro='')
+                super(MachineREPL, self).cmdloop(intro='')
                 break
             except KeyboardInterrupt:
                 return True
 
-    def do_RESERVAR(self, line):
+    def do_EJECUTABLE(self, line):
         ''' Extrae la información del comando, los valida, llama al
-        método correspondiente del BuddyAllocator y reporta el resultado.
-        '''
-        args = line.split()
-        # Solo dos argumentos
-        if len(args) != 2:
-            return print("Uso: RESERVAR <nombre> <número de bloques>, use el"
-                "comando help o ? para más información")
-
-        # El número de bloques es un entero positivo
-        try:
-            size = int(args[1])
-            if size < 1:
-                raise ValueError
-        except ValueError:
-            return self.print_error("Debe insertar un número entero positivo "
-                "como número de bloques.")
-
-        res = self.allocator.allocate(args[0], size)
-        if res == 0:
-            self.print_ok(f'{size} bloques de memoria asignados con el '
-                f'identificador "{args[0]}".')
-        elif res == 1:
-            self.print_error("No existe un bloque disponible para cumplir la."
-                "petición")
-        elif res == 2:
-            self.print_error(f'Ya existe un bloque con el identificador "{args[0]}"')
-
-    def do_LIBERAR(self, line):
-        ''' Extrae la información del comando, los valida, llama al
-        método correspondiente del BuddyAllocator y reporta el resultado.
+        método correspondiente de Machine y reporta el resultado.
         '''
         args = line.split()
         # Solo dos argumentos
         if len(args) != 1:
-            return print("Uso: LIBERAR <nombre>, use el comando help o ? "
-                "para más información")
+            return print("Uso: EJECUTABLE <nombre> <programa>, use el "
+                "comando help o ? para más información")
 
-        if self.allocator.free(args[0]):
-            self.print_ok("Bloques de memoria asociados al identificador "
-                f'"{args[0]}" liberados.')
-        else:
-            self.print_error(f'No existe un bloque con el identicador "{args[0]}".')
+        try:
+            if self.vm.is_executable(args[0]):
+                print(f"Si, es posible ejecutar el programa '{args[0]}'")
+            else:
+                print(f"No es posible ejecutar el programa '{args[0]}'")
+        except ValueError:
+            return self.print_error(f"El programa '{args[0]}' no existe en "
+                "la máquina.")
 
-    def do_MOSTRAR(self, line):
-        if line:
-            return print("Uso: MOSTRAR, use el comando help o ? "
-                "para más información")
-        print(f"{self.allocator}")
+    def do_DEFINIR(self, line):
+        ''' Extrae la información del comando, los valida, llama al
+        método correspondiente de Machine y reporta el resultado.
+        '''
+        args = line.split()
+        # Solo dos argumentos
+        if len(args) not in [3, 4]:
+            return print("Uso: DEFINIR <tipo> [<argumentos>], use el comando "
+                "help o ? para más información")
+
+        try:
+            if args[0] == 'PROGRAMA':
+                if len(args) != 3:
+                    return print("Uso: DEFINIR PROGRAMA <nombre> <lenguage>, "
+                        "use el comando help o ? para más información")
+
+                self.vm.add_program(args[1], args[2])
+                print(f"Se definió el programa '{args[1]}', ejecutable en '{args[2]}'")
+
+            elif args[0] == 'TRADUCTOR':
+                if len(args) != 4:
+                    return print("Uso: DEFINIR TRADUCTOR <lenguaje_base> <lenguage_origen> "
+                        "<lenguaje_destino>, use el comando help o ? para más información")
+
+                self.vm.add_compiler(args[2], args[3], args[1])
+                print(f"Se definió un traductor de '{args[2]}' hacia '{args[3]}', escrito en '{args[1]}'")
+
+            elif args[0] == 'INTERPRETE':
+                if len(args) != 3:
+                    return print("Uso: DEFINIR INTERPRETE <lenguaje_base> <lenguage>, "
+                        "use el comando help o ? para más información")
+
+                self.vm.add_interpreter(args[2], args[1])
+                print(f"Se definió un intérprete para '{args[2]}', escrito en '{args[1]}'")
+            else:
+                return print("Uso: DEFINIR <tipo> [<argumentos>], use el comando"
+                    "help o ? para más información")
+        except ValueError:
+            self.print_error("El nombre del lenguaje debe ser una cadena "
+                "de caracteres alfanuméricos")
 
     def do_SALIR(self, line) -> bool:
         return True
@@ -149,9 +163,6 @@ class BuddySystemREPL(Cmd):
             return True
         print("Comando inválido. Utilice el comando help o escriba ? para ver "
             "la lista de comandos.")
-
-    def print_ok(self, message):
-        print(f"\33[96m\033[1mOK: \033[0m{message}")
 
     def print_error(self, cause):
         print(f"\033[1m\033[91mERROR: \033[0m{cause}")

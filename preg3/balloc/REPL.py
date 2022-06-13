@@ -82,7 +82,7 @@ class BuddySystemREPL(Cmd):
         args = line.split()
         # Solo dos argumentos
         if len(args) != 2:
-            return print("Uso: RESERVAR <nombre> <número de bloques>, use el"
+            return print("Uso: RESERVAR <nombre> <número de bloques>, use el "
                 "comando help o ? para más información")
 
         # El número de bloques es un entero positivo
