@@ -23,9 +23,3 @@ Para correr la suite de tests del programa clone la estructura de archivos, sitÃ
 > make
 > runtests
 ```
-
-
-```shell
-> coverage run tests.py
-> coverage report -m
-```
