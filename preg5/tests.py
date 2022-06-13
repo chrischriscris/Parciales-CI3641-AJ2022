@@ -1,6 +1,4 @@
-from tkinter.tix import Tree
 import unittest
-from random import randint
 from tdiagram.Machine import Machine
 
 class TestMachine(unittest.TestCase):
