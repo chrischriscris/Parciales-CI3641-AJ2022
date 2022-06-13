@@ -1,3 +1,9 @@
+"""Módulo que implementa una máquina con programas, compiladores e intérpretes.
+CI3641 - Lenguajes de Programación I
+Pregunta 5
+
+Christopher Gómez (c) 2022
+"""
 from __future__ import annotations
 
 class Digraph():

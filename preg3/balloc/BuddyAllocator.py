@@ -1,3 +1,9 @@
+"""Módulo que implementa el método de asignación de memoria Buddy Allocator
+CI3641 - Lenguajes de Programación I
+Pregunta 3
+
+Christopher Gómez (c) 2022
+"""
 from __future__ import annotations
 
 from math import ceil, log2

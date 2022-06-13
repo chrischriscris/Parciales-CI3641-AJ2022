@@ -47,3 +47,6 @@ class TestErrors(unittest.TestCase):
     def test_err2(self):
         self.m = Machine()
         self.assertRaises(ValueError, self.m.is_executable, 'QUÉ')
+
+if __name__ == '__main__':
+    unittest.main()
