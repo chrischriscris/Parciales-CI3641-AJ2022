@@ -5,7 +5,7 @@ class Machine():
     def __init__(self):
         self.programs = {}
         self.compilers = {}
-        self.enviroment = Graph
+        self.enviroment = Graph()
         self.enviroment.add_node('LOCAL')
 
     def add_languages(self, *args: str):
@@ -38,15 +38,15 @@ class Machine():
         if program not in self.programs:
             raise ValueError(f'El programa "{program}" no existe en la máquina.')
 
-        if has_path(self.enviroment, program, 'LOCAL'):
+        if has_path(self.enviroment, self.programs[program], 'LOCAL'):
             return True
         return False
 
     def __str__(self) -> str:
         return (f'Programs:\n'
-            '{self.programs}\n'
+            f'{self.programs}\n'
             'Compilers:\n'
-            '{self.compilers}\n'
+            f'{self.compilers}\n'
             'Enviroment:\n'
             f'{to_dict_of_dicts(self.enviroment)}'
         )
@@ -63,7 +63,11 @@ def main():
     print(m.is_executable('factorial'))
     m.add_interpreter('C', 'LOCAL')
     print(m.is_executable('factorial'))
+    m.add_program('perapy', 'py')
+    m.add_interpreter('LOCAL', 'py')
+    print(m.is_executable('perapy'))
     print(m)
+
 
 if __name__ == '__main__':
     main()
