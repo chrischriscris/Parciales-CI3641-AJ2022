@@ -18,7 +18,8 @@ class TestMachine(unittest.TestCase):
             ('interpreter', 'C', 'LOCAL'),
             ('assert', 'facto', True),
             ('program', 'perapy', 'py'),
-            ('assert', 'facto', False),
+            ('interpretear', 'local', 'py'),
+            ('assert', 'perapy', False),
             ('program', 'holaa', 'Python3'),
             ('compiler', 'Python3', 'LOCAL', 'wtf42'),
             ('assert', 'holaa', False),
@@ -27,7 +28,6 @@ class TestMachine(unittest.TestCase):
         ]
 
         for el in actions:
-            print(el)
             if el[0] == 'program':
                 print(f"Añaide {el[0]}")
                 m.add_program(el[1], el[2])
