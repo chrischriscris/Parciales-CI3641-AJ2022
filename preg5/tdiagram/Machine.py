@@ -4,8 +4,6 @@ Pregunta 5
 
 Christopher Gómez (c) 2022
 """
-from __future__ import annotations
-
 class Digraph():
     '''Clase que implementa un grafo dirigido como mapa de adyacencias
     y lados que no se repiten, soporta las operaciones de añadir nodo,
@@ -33,13 +31,12 @@ class Digraph():
         queue = [_from]
         visited = set()
         while queue:
+            if queue[0] == to:
+                return True
             node = queue.pop(0)
-            if node not in visited:
-                visited.add(node)
-                for v in self.adj[node]:
-                    if v == to:
-                        return True
-                    queue.append(v)
+            visited.add(node)
+            for v in self.adj[node]:
+                queue.append(v)
         return False
 
     def __str__(self):
