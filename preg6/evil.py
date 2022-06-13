@@ -1,3 +1,3 @@
-from sys import argv
+import sys
 from sympy import*
-print(fibonacci(floor(log(bell(int(argv[1])+1),2))+1))
+print(fibonacci(floor(log(bell(int(sys.argv[1])+1),2))+1))
