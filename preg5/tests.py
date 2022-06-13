@@ -29,9 +29,7 @@ class TestMachine(unittest.TestCase):
 
         for el in actions:
             if el[0] == 'program':
-                print(f"Añaide {el[0]}")
                 m.add_program(el[1], el[2])
-                print(m)
             elif el[0] == 'interpreter':
                 m.add_interpreter(el[1], el[2])
             elif el[0] == 'compiler':
