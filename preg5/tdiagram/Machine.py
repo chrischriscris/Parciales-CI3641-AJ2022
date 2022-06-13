@@ -34,7 +34,8 @@ class Digraph():
         visited.add(_from)
         for node in self.adj[_from]:
             if node not in visited:
-                return self.has_path(node, to)
+                if self.has_path(node, to):
+                    return True
         return False
 
     def __str__(self):
