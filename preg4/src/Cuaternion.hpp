@@ -40,7 +40,7 @@ public:
     Cuaternion operator*(int other);
     double operator&();
     bool operator==(const Cuaternion &other) const;
-    void prnt();
+    void print();
 };
 
 #endif
