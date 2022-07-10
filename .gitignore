@@ -2,6 +2,11 @@
 
 latex_src
 
+# =================== ejecutables y otros ========================
+
+preg4
+out
+
 # =================== python ========================
 
 # Byte-compiled / optimized / DLL files

@@ -1,23 +1,16 @@
-from ast import arg
+"""Generador de expresiones bien parentizadas con n pares de paréntesis.
+CI3641 - Lenguajes de Programación I
+Pregunta 3
+
+Christopher Gómez (c) 2022
+"""
 from sys import argv
 
-def ins(e, ls):
-    yield [e, *ls]
-    if ls:
-        for i in ins(e, ls[1:]):
-            yield [ls[0], *i]
-
-def misterio(ls):
-    if ls:
-        for m in misterio(ls[1:]):
-            # print(f"yield m: {m}")
-            for i in ins(ls[0], m):
-                # print(f"yield i: {m}")
-                yield i
-    else:
-        yield []
-
 def main():
+    '''Entry-point de bienParentizadas.py, imprime todas las posibles
+    expresiones bien parentetizadas con n pares de paréntesis y su cuenta.
+    Recibe n por línea de comandos.
+    '''
     if len(argv) != 2:
         print(f"Uso: python3 {argv[0]} <n>")
         return
@@ -25,15 +18,16 @@ def main():
     try:
         n = int(argv[1])
     except:
-        print("El argumento n debe ser un entero no negativo")
+        print(f'"{argv[1]}" no es un número entero')
         return
 
-    print(f"bienParentizadas({n}):")
+    print(f"bienParentizadas({n})")
     for i, expr in enumerate(bienParentizadas(n)):
-        print(expr, end="\t")
-        if (i + 1) % 3 == 0:
+        print(expr, end='    ')
+        if (i+1) % 3 == 0:
             print()
-    print()
+
+    print(f"\nHay un total de {i+1} expresiones bien parentizadas.")
 
 def bienParentizadas(n: int) -> str:
     ''' Iterador que genera el conjunto de todas las expresiones bien parentizadas
@@ -43,8 +37,8 @@ def bienParentizadas(n: int) -> str:
     # que se han hallado hasta el momento.
     expr_set = set()
     
-    # Caso base: Ningún par de paréntesis
-    if n == 0:
+    # Caso base: Ningún par de paréntesis (o menos?)
+    if n <= 0:
         expr_set.add("")
         yield ""
         return
@@ -71,15 +65,4 @@ def bienParentizadas(n: int) -> str:
             yield expr3
 
 if __name__ == "__main__":
-    # for i in ins(0, [1, 2, 3]):
-    #     print("ins:", i)
-
-    # for m in misterio([1, 2, 3]):
-    #     print("misterio:", m)
-
-    # count = 0
-    # for par in bienParentizadas(5):
-    #     count += 1
-    #     print("bienParentizadas:", par)
-    # print(count)
     main()
