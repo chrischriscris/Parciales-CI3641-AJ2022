@@ -1,90 +1,90 @@
+// Carnet: 18-10892
 // X = 8, Y = 9, Z = 2
 // α = ((8 + 9) mod 5) + 3 = 17 mod 5 + 3 = 5
 // β = ((9 + 2) mod 5) + 3 = 11 mod 5 + 3 = 4
+use std::time::Instant;
 
 fn main() {
-    for i in 0..=125 {
-        println!("f_54_rec({})     : {}", i, f_54_rec(i));
+    // ========= BENCHMARK RECURSION =========
+    {
+        let now_rec = Instant::now();
+        for i in 0..=125 { f_54_rec(i); }
+        let elapsed_rec = now_rec.elapsed();
+        println!("Tiempo recursión: {:?}", elapsed_rec);
     }
 
-    for i in 0..=125 {
-        println!("f_54_tailrec({}) : {}", i, f_54_tailrec(i));
+    // ========= BENCHMARK RECURSION DE COLA =========
+    {
+        let now_tailrec = Instant::now();
+        for i in 0..=125 { f_54_tailrec(i); }
+        let elapsed_tailrec = now_tailrec.elapsed();
+        println!("Tiempo recursión de cola: {:?}", elapsed_tailrec);
     }
 
-    for i in 0..=125 {
-        println!("f_54_it({})      : {}", i, f_54_it(i));
+    // ========= BENCHMARK ITERACIÓN =========
+    {
+        let now_it = Instant::now();
+        for i in 0..=125 { f_54_it(i); }
+        let elapsed_it = now_it.elapsed();
+        println!("Tiempo iteración: {:?}", elapsed_it);
     }
 }
 
-fn f_54_rec(n: i32) -> i32 {
+fn f_54_rec(n: i64) -> i64 {
     // Casos base
-    if 0 <= n && n < 20 {
-        return n;
-    }
+    if 0 <= n && n < 20 { return n; }
 
     // Caso recursivo
     f_54_rec(n -  4) + f_54_rec(n -  8) + f_54_rec(n - 12) +
     f_54_rec(n - 16) + f_54_rec(n - 20)
 }
 
-fn f_54_tailrec(n: i32) -> i32 {
+fn f_54_tailrec(n: i64) -> i64 {
     // Función auxiliar que hace recursión de cola
-    fn f_54_tailrec_helper(n: i32, acc: &mut[i32]) -> i32 {
+    fn f_54_tailrec_helper(n: i64, acc: &mut[i64]) -> i64 {
         // Casos base
-        if 0 <= n && n < 20 {
-            return n;
-        }
+        if 0 <= n && n < 20 { return n; }
 
         // Caso recursivo
         let sum = acc.iter().sum();
 
-        if 4 <= n && n < 24 {
-            sum
-        } else {
-            // Rota el arreglo hacia la izquierda
-            for i in 0..4 {
-                acc[i] = acc[i + 1];
-            }
-            acc[4] = sum;
-            
-            f_54_tailrec_helper(n - 4, acc)
-        }
+        if 4 <= n && n < 24 { return sum; }
+    
+        // Rota el arreglo hacia la izquierda
+        for i in 0..4 { acc[i] = acc[i + 1]; }
+        acc[4] = sum;
+        
+        f_54_tailrec_helper(n - 4, acc)
     }
 
     // Inicialización del acumulador
     let mut acc = [0; 5];
     let m = n % 4;
-    for i in 0..5 as i32 {
-        acc[i as usize] = m + i*4;
-    }
+    for i in 0..5 as i64 { acc[i as usize] = m + i*4; }
 
     f_54_tailrec_helper(n, &mut acc)
 }
 
-fn f_54_it(n: i32) -> i32 {
+
+fn f_54_it(n: i64) -> i64 {
     // Casos base
-    if 0 <= n && n < 20 {
-        return n;
-    }
+    if 0 <= n && n < 20 { return n; }
 
     // Caso recursivo
     // Inicialización del acumulador
     let mut acc = [0; 5];
     let m = n % 4;
-    for i in 0..5 as i32 {
-        acc[i as usize] = m + i*4;
-    }
+    for i in 0..5 as i64 { acc[i as usize] = m + i*4; }
 
+    let mut n_it = n;
     loop {
         let sum = acc.iter().sum();
 
-        if 4 <= n && n < 24 {
-            return sum;
-        } else {
-            for i in 0..4 {
-                acc[i] = acc[i + 1];
-            }
-            acc[4] = sum;
-        }
+        if 4 <= n_it && n_it < 24 { return sum; }
+        
+        // Rota el arreglo y decrementa n
+        for i in 0..4 { acc[i] = acc[i + 1]; }
+        acc[4] = sum;
+        n_it -= 4;
     }
 }
