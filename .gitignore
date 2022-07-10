@@ -5,6 +5,11 @@ latex_src
 # =================== ejecutables y otros ========================
 
 preg4
+preg3a.odp
+preg3b.odp
+preg6a.odp
+.~lock.preg3a.odp#
+.~lock.preg3b.odp#
 out
 
 # =================== python ========================

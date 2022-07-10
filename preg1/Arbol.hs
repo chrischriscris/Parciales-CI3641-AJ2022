@@ -21,12 +21,12 @@ esMaxHeap (Rama val izq der) =
 
 -- | Retorna un booleano que indica si el arbol es simétrico.
 esSimetrico :: Eq a => Arbol a -> Bool
-esSimetrico a = preOrder a  == postOrder a
+esSimetrico a = preorder a  == postorder a
     where
-        preOrder :: Arbol a -> [a]
-        preOrder (Hoja val) = [val]
-        preOrder (Rama val izq der) = val : preOrder izq ++ preOrder der
+        preorder :: Arbol a -> [a]
+        preorder (Hoja val) = [val]
+        preorder (Rama val izq der) = val : preorder izq ++ preorder der
 
-        postOrder :: Arbol a -> [a]
-        postOrder (Hoja val) = [val]
-        postOrder (Rama val izq der) = postOrder izq ++ postOrder der ++ [val]
+        postorder :: Arbol a -> [a]
+        postorder (Hoja val) = [val]
+        postorder (Rama val izq der) = postorder izq ++ postorder der ++ [val]

@@ -1,0 +1,9 @@
+E -> =>EX   { E.val = E1.val → E2.val }
+    |  X       { E.val = X.val }
+X -> |XY   { X.val = X1.val ∨ Y.val }
+    | Y        { X.val = Y.val }
+Y -> &YZ   { Y.val = Y1.val ∧ Z.val }
+    | Z        { Y.val = Z.val }
+Z -> ^Z     { Z.val = ¬Z1.val }
+   | (E)       { Z.val = (E.val) }
+   | a         { Z.val = a.val }
