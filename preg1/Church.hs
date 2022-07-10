@@ -13,14 +13,12 @@ data Church = Cero | Suc Church
 -- Usa que suc(m) + n = m + suc(n)
 suma :: Church -> Church -> Church
 suma Cero    n    = n
-suma m       Cero = m
 suma (Suc m) n    = suma m (Suc n)
 
 -- | Multiplica dos numerales de Church.
 -- Usa que suc(m) * n = (m * n) + n
 multiplicacion :: Church -> Church -> Church
 multiplicacion Cero    n    = Cero
-multiplicacion m       Cero = Cero
 multiplicacion (Suc m) n    = suma n $ multiplicacion m n
 
 -- | Operador de suma de numerales de Church.
