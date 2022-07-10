@@ -30,6 +30,7 @@ fn main() {
     }
 }
 
+/// Implementación recursiva simple de la función F_{5.4}.
 fn f_54_rec(n: i64) -> i64 {
     // Casos base
     if 0 <= n && n < 20 { return n; }
@@ -39,6 +40,7 @@ fn f_54_rec(n: i64) -> i64 {
     f_54_rec(n - 16) + f_54_rec(n - 20)
 }
 
+/// Implementación con recursión de cola de la función F_{5, 4}.
 fn f_54_tailrec(n: i64) -> i64 {
     // Función auxiliar que hace recursión de cola
     fn f_54_tailrec_helper(n: i64, acc: &mut[i64]) -> i64 {
@@ -53,7 +55,8 @@ fn f_54_tailrec(n: i64) -> i64 {
         // Rota el arreglo hacia la izquierda
         for i in 0..4 { acc[i] = acc[i + 1]; }
         acc[4] = sum;
-        
+
+        // Hace recursión de cola
         f_54_tailrec_helper(n - 4, acc)
     }
 
@@ -65,7 +68,7 @@ fn f_54_tailrec(n: i64) -> i64 {
     f_54_tailrec_helper(n, &mut acc)
 }
 
-
+/// Implementación iterativa de la función F_{5, 4}.
 fn f_54_it(n: i64) -> i64 {
     // Casos base
     if 0 <= n && n < 20 { return n; }
