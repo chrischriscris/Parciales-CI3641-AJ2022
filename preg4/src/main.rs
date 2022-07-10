@@ -6,27 +6,39 @@ use std::time::Instant;
 
 fn main() {
     // ========= BENCHMARK RECURSION =========
-    {
-        let now_rec = Instant::now();
-        for i in 0..=125 { f_54_rec(i); }
-        let elapsed_rec = now_rec.elapsed();
-        println!("Tiempo recursión: {:?}", elapsed_rec);
+    {   
+        println!("f_54_rec:");
+        for i in 0..=130 {
+            print!("i={}:", i);
+            let now_rec = Instant::now();
+            f_54_rec(i);
+            let elapsed_rec = now_rec.elapsed();
+            println!("{:?}", elapsed_rec);
+        }
     }
 
     // ========= BENCHMARK RECURSION DE COLA =========
-    {
-        let now_tailrec = Instant::now();
-        for i in 0..=125 { f_54_tailrec(i); }
-        let elapsed_tailrec = now_tailrec.elapsed();
-        println!("Tiempo recursión de cola: {:?}", elapsed_tailrec);
+    {   
+        println!("f_54_tailrec:");
+        for i in 0..=130 {
+            print!("i={}:", i);
+            let now_tailrec = Instant::now();
+            f_54_tailrec(i);
+            let elapsed_tailrec = now_tailrec.elapsed();
+            println!("{:?}", elapsed_tailrec);
+        }
     }
 
     // ========= BENCHMARK ITERACIÓN =========
-    {
-        let now_it = Instant::now();
-        for i in 0..=125 { f_54_it(i); }
-        let elapsed_it = now_it.elapsed();
-        println!("Tiempo iteración: {:?}", elapsed_it);
+    {   
+        println!("f_54_it:");
+        for i in 0..=130 {
+            print!("i={}:", i);
+            let now_it = Instant::now();
+            f_54_it(i);
+            let elapsed_it = now_it.elapsed();
+            println!("{:?}", elapsed_it);
+        }
     }
 }
 
