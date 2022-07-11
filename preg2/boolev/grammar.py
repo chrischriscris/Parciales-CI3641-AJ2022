@@ -4,6 +4,8 @@ Pregunta 2
 
 Christopher Gómez (c) 2022
 """
+from .tokenrules import tokens
+
 # -------- REGLAS DE PRECEDENCIA --------
 precedence = (
     ('right', 'THEN'),
@@ -77,7 +79,16 @@ def p_prefija3(p):
 
     p[0] = (f'^ {p3_str}', not p3_val)
 
-# <prefija3> -> <prefija>
+# =========== EXPRESIONES TERMINALES ===========
+# <bool> -> true | false
+def p_bool(p):
+    '''bool : TRUE
+        | FALSE'''
+    bool_str = p[1].lower()
+    bool_val = True if bool_str == 'true' else False
+    p[0] = (bool_str, bool_val)
+
+# <prefija3> -> <prefija1>
 def p_prefija3_reset(p):
     '''prefija3 : prefija1'''
     p1_str = p[1][0]
@@ -151,14 +162,6 @@ def p_posfija3_reset(p):
     p1_val = p[1][1]
     p[0] = (f'({p1_str})', p1_val)
 
-# =========== EXPRESIONES TERMINALES ===========
-# <bool> -> true | false
-def p_bool(p):
-    '''bool : TRUE
-        | FALSE'''
-    bool_str = p[1].lower()
-    bool_val = True if bool_str == 'true' else False
-    p[0] = (bool_str, bool_val)
 
 # ======== ERRORES ============
 def p_error(p):

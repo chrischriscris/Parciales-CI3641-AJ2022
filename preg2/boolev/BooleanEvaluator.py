@@ -25,7 +25,7 @@ class BooleanEvaluator:
     def __init__(self):
         # No se imprime ningún mensaje que pueda generar ply
         self.lex = lex.lex(module=tokenrules)
-        self.parser = yacc.yacc(module=grammar) # errorlog=NullLogger
+        self.parser = yacc.yacc(module=grammar)
 
     def parse(self, command: str) -> Tuple[str, bool]:
         """Llama al parser de BooleanEvaluator.

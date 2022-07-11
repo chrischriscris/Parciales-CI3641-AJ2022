@@ -12,5 +12,5 @@ if __name__ == '__main__':
     if len(argv) != 1:
         print(f"Uso: python {argv[0]}")
 
-    repl = BooleanEvaluatorREPL(n)
+    repl = BooleanEvaluatorREPL()
     repl.cmdloop()
