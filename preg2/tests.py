@@ -6,12 +6,17 @@ class TestEvaluator(unittest.TestCase):
         self.assertEqual(BooleanEvaluator().evaluate('& true false', True), 'false')
         self.assertEqual(BooleanEvaluator().evaluate('| & => true true false true', True), 'true')
         self.assertEqual(BooleanEvaluator().evaluate(' true false => false | true false ^ | &', False), 'false')
+        self.assertEqual(BooleanEvaluator().evaluate(' ^ => true false ', True), 'true')
+        self.assertEqual(BooleanEvaluator().evaluate(' => ^ true false ', True), 'true')
+        self.assertEqual(BooleanEvaluator().evaluate(' true false => ^ ', False), 'true')
+        self.assertEqual(BooleanEvaluator().evaluate(' true false ^ => ', False), 'true')
 
     def test_expressions_show(self):
         self.assertEqual(BooleanEvaluator().show('& true false', True), 'true & false')
         self.assertEqual(BooleanEvaluator().show('| & => true true false true', True), '(true => true) & false | true')
         self.assertEqual(BooleanEvaluator().show(' true false => false | true false ^ | &', False), '(true => false) | false & (true | ^ false)')
         self.assertEqual(BooleanEvaluator().show(' ^ => true false ', True), '^ (true => false)')
+        self.assertEqual(BooleanEvaluator().show(' => ^ true false ', True), '^ true => false')
         self.assertEqual(BooleanEvaluator().show(' => ^ true false ', True), '^ true => false')
         self.assertEqual(BooleanEvaluator().show(' true false => ^ ', False), '^ (true => false)')
         self.assertEqual(BooleanEvaluator().show(' true false ^ => ', False), 'true => ^ false')
