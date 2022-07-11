@@ -12,6 +12,8 @@ preg6a.odp
 .~lock.preg3b.odp#
 .~lock.preg6a.odp#
 out
+*.pdf
+*.odp
 
 # =================== python ========================
 
