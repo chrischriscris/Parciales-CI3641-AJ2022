@@ -28,28 +28,22 @@ class BooleanEvaluatorREPL(Cmd):
     # ---------- COMANDOS DE DOCUMENTACION DE COMANDOS EN REPL ----------
     def help_EVAL(self):
         print(dedent('''
-            EVAL [<orden>] <expr>
+            EVAL <orden> <expr>
 
             Evalúa la expresión booleana dada, escrita de acuerdo a <orden>,
             que puede ser PRE o POST (para expresiones prefijas y posfijas,
             respectivamente).
-
-            Note que el argumento <orden> es opcional, este es ignorado y
-            puede prescindir de él.
 
             Reporta error si la expresión no es válida.
             '''))
 
     def help_MOSTRAR(self):
         print(dedent('''
-            MOSTRAR [<orden>] <expr>
+            MOSTRAR <orden> <expr>
 
             Imprime en orden infijo la expresión dada, escrita de acuerdo a
             <orden>, que puede ser PRE o POST (para expresiones prefijas y
             posfijas, respectivamente).
-
-            Note que el argumento <orden> es opcional, este es ignorado y
-            puede prescindir de él.
 
             Reporta error si la expresión no es válida.
             '''))
@@ -78,13 +72,22 @@ class BooleanEvaluatorREPL(Cmd):
         '''
         args = line.split()
 
-        # Descarta el argumento innecesario
-        if args[0] in ["PRE", "POST"]:
-            del args[0]
+        if len(args) < 2:
+            return print("Uso: MOSTRAR [<orden>] <expr>.\nUtilice el comando "
+                "help o escriba ? ver la lista de comandos.")
 
-        expr = ' '.join(args)
         try:
-            res = self.parser.evaluate(expr)
+            if args[0] == "PRE":
+                del args[0]
+                expr = ' '.join(args)
+                res = self.parser.evaluate(expr, True)
+            elif args[0] == "POST":
+                del args[0]
+                expr = ' '.join(args)
+                res = self.parser.evaluate(expr)
+            else:
+                return print("Uso: MOSTRAR <orden> <expr>.\nUtilice el comando "
+                    "help o escriba ? ver la lista de comandos.")
         except:
             return self.print_error("Expresión inválida.")
 
@@ -96,17 +99,22 @@ class BooleanEvaluatorREPL(Cmd):
         '''
         args = line.split()
 
-        if not args:
+        if len(args) < 2:
             return print("Uso: MOSTRAR [<orden>] <expr>.\nUtilice el comando "
                 "help o escriba ? ver la lista de comandos.")
 
-        # Descarta el argumento innecesario
-        if args[0] in ["PRE", "POST"]:
-            del args[0]
-
-        expr = ' '.join(args)
         try:
-            res = self.parser.show(expr)
+            if args[0] == "PRE":
+                del args[0]
+                expr = ' '.join(args)
+                res = self.parser.show(expr, True)
+            elif args[0] == "POST":
+                del args[0]
+                expr = ' '.join(args)
+                res = self.parser.show(expr)
+            else:
+                return print("Uso: MOSTRAR <orden> <expr>.\nUtilice el comando "
+                    "help o escriba ? ver la lista de comandos.")
         except:
             return self.print_error("Expresión inválida.")
 
