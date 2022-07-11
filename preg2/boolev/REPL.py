@@ -100,16 +100,18 @@ class BooleanEvaluatorREPL(Cmd):
         args = line.split()
 
         if len(args) < 2:
-            return print("Uso: MOSTRAR [<orden>] <expr>.\nUtilice el comando "
+            return print("Uso: MOSTRAR <orden> <expr>.\nUtilice el comando "
                 "help o escriba ? ver la lista de comandos.")
 
         try:
             if args[0] == "PRE":
                 del args[0]
+
                 expr = ' '.join(args)
                 res = self.parser.show(expr, True)
             elif args[0] == "POST":
                 del args[0]
+
                 expr = ' '.join(args)
                 res = self.parser.show(expr)
             else:
