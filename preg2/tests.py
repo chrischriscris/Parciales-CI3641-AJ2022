@@ -11,6 +11,10 @@ class TestEvaluator(unittest.TestCase):
         self.assertEqual(BooleanEvaluator().show('& true false', True), 'true & false')
         self.assertEqual(BooleanEvaluator().show('| & => true true false true', True), '(true => true) & false | true')
         self.assertEqual(BooleanEvaluator().show(' true false => false | true false ^ | &', False), '(true => false) | false & (true | ^ false)')
+        self.assertEqual(BooleanEvaluator().show(' ^ => true false ', True), '^ (true => false)')
+        self.assertEqual(BooleanEvaluator().show(' => ^ true false ', True), '^ true => false')
+        self.assertEqual(BooleanEvaluator().show(' true false => ^ ', False), '^ (true => false)')
+        self.assertEqual(BooleanEvaluator().show(' true false ^ => ', False), 'true => ^ false')
 
     def test_expressions_to_posfix(self):
         self.assertEqual(BooleanEvaluator().to_posfix('& true false'), 'true false &')
