@@ -6,7 +6,7 @@ Christopher Gómez (c) 2022
 """
 from .tokenrules import tokens
 
-# -------- REGLAS DE PRECEDENCIA --------
+# -------- REGLAS DE PRECEDENCIA Y ASOCIATIVIDAD --------
 precedence = (
     ('right', 'THEN'),
     ('left', 'AND', 'OR'),
@@ -64,9 +64,8 @@ def p_prefija2(p):
     p[0] = (f'{p2_str} {p[1]} {p3_str}', p0_val)
 
 # -------- NEGACIÓN --------
-# <prefija3> -> ^ <prefija3>
+# <prefija3> -> <prefija3> ^
 #     | <bool>
-#     | <prefija>
 def p_prefija3(p):
     '''prefija3 : NOT prefija3
         | bool'''
@@ -79,22 +78,12 @@ def p_prefija3(p):
 
     p[0] = (f'^ {p3_str}', not p3_val)
 
-# =========== EXPRESIONES TERMINALES ===========
-# <bool> -> true | false
-def p_bool(p):
-    '''bool : TRUE
-        | FALSE'''
-    bool_str = p[1].lower()
-    bool_val = True if bool_str == 'true' else False
-    p[0] = (bool_str, bool_val)
-
 # <prefija3> -> <prefija1>
 def p_prefija3_reset(p):
     '''prefija3 : prefija1'''
     p1_str = p[1][0]
     p1_val = p[1][1]
     p[0] = (f'({p1_str})', p1_val)
-
 
 # ============== POSFIJAS ==============
 
@@ -155,13 +144,21 @@ def p_posfija3(p):
 
     p[0] = (f'^ {p3_str}', not p3_val)
 
-# <posfija3> -> <posfija>
+# <posfija3> -> <posfija1>
 def p_posfija3_reset(p):
     '''posfija3 : posfija1'''
     p1_str = p[1][0]
     p1_val = p[1][1]
     p[0] = (f'({p1_str})', p1_val)
 
+# =========== EXPRESIONES TERMINALES ===========
+# <bool> -> true | false
+def p_bool(p):
+    '''bool : TRUE
+        | FALSE'''
+    bool_str = p[1].lower()
+    bool_val = True if bool_str == 'true' else False
+    p[0] = (bool_str, bool_val)
 
 # ======== ERRORES ============
 def p_error(p):

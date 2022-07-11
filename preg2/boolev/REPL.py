@@ -96,6 +96,10 @@ class BooleanEvaluatorREPL(Cmd):
         '''
         args = line.split()
 
+        if not args:
+            return print("Uso: MOSTRAR [<orden>] <expr>.\nUtilice el comando "
+                "help o escriba ? ver la lista de comandos.")
+
         # Descarta el argumento innecesario
         if args[0] in ["PRE", "POST"]:
             del args[0]
