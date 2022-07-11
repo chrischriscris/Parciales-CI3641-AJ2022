@@ -12,7 +12,7 @@ class BooleanEvaluatorREPL(Cmd):
         parser: Instancia que implementa el BooleanEvaluator.
     """
     # Mensajes de la REPL
-    prompt = f'\033[1;32mBooleanEvaluator > \033[0m'
+    prompt = f'\033[1;32mBooleanEvaluator> \033[0m'
     intro = (f'BooleanEvaluator v1.0\n'
         'Utiliza "?" para mostrar los comandos disponibles.')
     doc_header = ('''Lista de comandos basicos (escribe 'help <nombre>' '''
@@ -73,17 +73,12 @@ class BooleanEvaluatorREPL(Cmd):
                 return True
 
     def do_EVAL(self, line):
-        ''' Extrae la información del comando, los valida, y llama al método
+        ''' Extrae la información del comando, y llama al método
         correspondiente del BooleanEvaluator, reportando el resultado.
         '''
         args = line.split()
-        # Solo dos argumentos
-        if len(args) < 2:
-            return print("Uso: EVAL [<orden>] <expr>, use el "
-                "comando help o ? para más información")
 
-        # Descarta los argumentos no necesarios
-        del args[0]
+        # Descarta el argumento innecesario
         if args[0] in ["PRE", "POST"]:
             del args[0]
 
@@ -96,20 +91,22 @@ class BooleanEvaluatorREPL(Cmd):
         self.print_ok(f'{res}')
 
     def do_MOSTRAR(self, line):
-        ''' Extrae la información del comando, los valida, llama al
-        método correspondiente del BuddyAllocator y reporta el resultado.
+        ''' Extrae la información del comando, y llama al método
+        correspondiente del BooleanEvaluator, reportando el resultado.
         '''
         args = line.split()
-        # Solo dos argumentos
-        if len(args) != 1:
-            return print("Uso: LIBERAR <nombre>, use el comando help o ? "
-                "para más información")
 
-        if self.allocator.free(args[0]):
-            self.print_ok("Bloques de memoria asociados al identificador "
-                f'"{args[0]}" liberados.')
-        else:
-            self.print_error(f'No existe un bloque con el identicador "{args[0]}".')
+        # Descarta el argumento innecesario
+        if args[0] in ["PRE", "POST"]:
+            del args[0]
+
+        expr = ' '.join(args)
+        try:
+            res = self.parser.show(expr)
+        except:
+            return self.print_error("Expresión inválida.")
+
+        self.print_ok(f'{res}')
 
     def do_SALIR(self, line) -> bool:
         return True

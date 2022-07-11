@@ -33,10 +33,7 @@ class BooleanEvaluator:
         Retorna:
             Una tupla (string infija, evaluación) con el resultado del parsing.
         """
-        try:
-            return self.parser.parse(command, lexer=self.lex)
-        except:
-            return "Expresión inválida"
+        return self.parser.parse(command, lexer=self.lex)
 
     def evaluate(self, command: str) -> str:
         """Evalúa la expresión dada.
