@@ -14,7 +14,7 @@ class Cola<T>: Secuencia<T> {
 
     /** Agrega [el] a la secuencia. */
     override fun agregar(el: T) {
-        elems.add(0, el)
+        elems.add(el)
     }
 
     /** Elimina un elemento de la secuencia y lo retorna. */
