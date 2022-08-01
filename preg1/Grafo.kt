@@ -1,52 +1,75 @@
 /**
  * Autor: Christopher Gòmez
- * Fecha: 01/Nov/2021
+ * Fecha: 31/Jul/2022
  */
 
-package ve.usb.grafoLib
+import java.lang.StringBuilder
 
-/**
- * Interfaz para la implementación de la estructura de datos
- * Grafo.
+/** 
+ * Clase que implementa la estructura de digrafo como una lista de adyacencia.
+ * No permite lados repetidos.
  *
- * Se refiere a V y E como el conjunto de vértices y lados del
- * grafo, respectivamente.
- */ 
-interface Grafo {
-    /**
-     * Retorna el número de lados en el grafo.
-     *
-     * Precondición: true.
-     * Postcondición: [obtenerNumeroDeLados] = |E|
-     */
-    fun obtenerNumeroDeLados(): Int
+ * Soporta las operaciones de añadir un lado y obtener los adyacentes a un
+ * nodo.
+ */
+class Grafo {
+    val nVertices
+    get() = ady.size
+
+    private val ady = mutableListOf<MutableList<Int>>()
+    val nodeMap = mutableMapOf<Int, Int>()
 
     /**
-     * Retorna el número de vértices del grafo.
-     *
-     * Precondición: true.
-     * Postcondición: [obtenerNumeroDeVertices] = |V|
-     */
-    fun obtenerNumeroDeVertices(): Int
-
-    /**                 
-     * Retorna los lados adyacentes al vértice [v].
-     *
-     * @throws [RuntimeException] El vértice está fuera del intervalo [0..|V|).
+     * Agrega un lado de [u] a [v] al dígrafo.
      * 
-     * Precondición: [v] pertenece al conjunto de vértices del grafo.
-     * Postcondición: [adyacentes] es un objeto iterable que contiene
-     *                todos los lados del grafo adyacentes al vértice [v].
+     * @return True si el lado fue agregado exitosamente.
+     *     False si ya existía el lado en el grafo.
      */
-    fun adyacentes(v: Int): Iterable<Lado>
+    fun agregarLado(u: Int, v: Int): Boolean{
+        /* Si no existía, añade el nodo a la lista de adyacencias
+        inicializado con una lista vacía */
+        val node = nodeMap.getOrPut(u) { 
+            ady.add(mutableListOf<Int>())
+            nVertices - 1
+        }
+
+        // Análogamente
+        nodeMap.getOrPut(v) {
+            ady.add(mutableListOf<Int>())
+            nVertices - 1
+        }
+
+        return if (v !in ady[node]) ady[node].add(v) else false
+    }
+
+    /**
+     * Retorna la lista de adyacencia del vértice [u] como un objeto iterable.
+     *
+     * @throws [RuntimeException] El vértice [u] no está en el grafo.
+     */
+    fun adyacentes(u: Int): Iterable<Int> {
+        if (!contains(u)) throw RuntimeException("Vertice $u no existe")
+        return ady[nodeMap[u]!!]
+    }
+
+    /**
+     * Retorna un booleano indicando si el grafo contiene el nodo dado.
+     */
+    fun contains(u: Int) = u in nodeMap
 
     /** 
-     * Retorna el grado del vértice [v] del grafo.
-     * 
-     * @throws [RuntimeException] El vértice está fuera del intervalo [0..|V|).
+     * Retorna la representación en String del dígrafo, como
+     * una String de múltiples líneas donde cada línea tiene la forma:
      *
-     * Precondición: [v] pertenece al conjunto de vértices del grafo.
-     * Postcondición: [grado] es un entero con el grado de [v].
+     * Vértice  | --> Lista de lados.
+     * 
+     * El orden de los vértices en la representación no está garantizado.
      */
-    fun grado(v: Int): Int
+    override fun toString(): String {
+	    val str = StringBuilder()
+
+        for (u in nodeMap.keys) str.append("%4d | ${adyacentes(u)}\n".format(u))
+
+	    return str.toString()
+    }
 }

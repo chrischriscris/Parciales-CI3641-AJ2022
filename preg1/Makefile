@@ -1,7 +1,7 @@
 KC = kotlinc
 KFLAGS = -cp
 
-all: Pila.class Cola.class
+all: Pila.class Cola.class Grafo.class Busqueda.class
 
 Pila.class: Secuencia.class Pila.kt
 	$(KC) $(KFLAGS) . Pila.kt
@@ -14,6 +14,9 @@ Secuencia.class: Secuencia.kt
 
 Grafo.class: Grafo.kt
 	$(KC) Grafo.kt
+
+Busqueda.class: Secuencia.class Pila.class Cola.class Busqueda.kt
+	$(KC) $(KFLAGS) . Busqueda.kt
 
 clean:
 	rm -rf *.class META-INF
