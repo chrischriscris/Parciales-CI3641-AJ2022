@@ -3,26 +3,18 @@
  * Fecha: 31/Jul/2022
  */
 
+package secuencia
+
 /**
- * Clase que implementa la interfaz Secuencia como una cola.
+ * Clase que implementa la clase abstracta Secuencia como una cola.
  * 
  * Soporta las operaciones de inserción, borrado y chequeo de
  * si está vacía.
  */
-class Cola<T>: Secuencia<T> {
-    private val elems = mutableListOf<T>()
-
-    /** Agrega [el] a la secuencia. */
-    override fun agregar(el: T) {
-        elems.add(el)
-    }
-
+public class Cola<T>: Secuencia<T>() {
     /** Elimina un elemento de la secuencia y lo retorna. */
     override fun remover(): T {
         if (vacio()) throw Exception("La cola está vacía.")
         return elems.removeAt(0)
     }
-
-    /** Retorna un booleano indicando si la secuencia está vacía. */
-    override fun vacio() = elems.isEmpty()
 }

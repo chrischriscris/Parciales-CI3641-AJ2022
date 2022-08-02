@@ -3,33 +3,34 @@
  * Fecha: 01/Nov/2021
  */
 
+package grafo
+
+import secuencia.*
 import kotlin.Double.Companion.POSITIVE_INFINITY
 
 /** 
- * Implementación del algoritmo sobre grafos Breadth-First Search.
- * 
- * Ejecuta el algoritmo BFS tomando al vértice [s] como fuente
- * cuando se crea una instancia.
+ * Implementación de búsqueda sobre dígrafos.
  * 
  * @param [g]: grafo sobre el que se ejecuta el algoritmo.
  * @param [s]: Entero no negativo que represente el vértice fuente.
- * 
- * @throws [RuntimeException] El vértice fuente [s] no pertenece al conjunto
- *                            de vértices del grafo.
  */
 public abstract class Busqueda(val g: Grafo) {
     private var visited = mutableSetOf<Int>()
     abstract val seq: Secuencia<Int>
 
+    /**
+     * Realiza un algoritmo
+     */
     fun buscar(D: Int, H: Int): Int {
         visited = mutableSetOf<Int>()
         var n = 0
-
-        if (!g.contains(D)) {
+        
+        /* 
+        if (!g.contains(D))
             throw RuntimeException("El vértice $D no pertenece al grafo.")
-        } else if (!g.contains(H)) {
+        else if (!g.contains(H))
             throw RuntimeException("El vértice $H no pertenece al grafo.")
-        }
+        */
 
         // Algoritmo de búsqueda
 
@@ -40,8 +41,10 @@ public abstract class Busqueda(val g: Grafo) {
             
             // El orden lo definirá la implementación de secuencia
             val u = seq.remover()
-            println("Revisando $u")
-            if (u == H) return n
+            if (u == H) {
+                while (!seq.vacio()) seq.remover()
+                return n
+            }
 
             g.adyacentes(u).forEach { if (visited.add(it)) seq.agregar(it) }
         }

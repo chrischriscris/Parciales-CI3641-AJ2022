@@ -3,6 +3,8 @@
  * Fecha: 31/Jul/2022
  */
 
+package grafo
+
 import java.lang.StringBuilder
 
 /** 
@@ -12,7 +14,7 @@ import java.lang.StringBuilder
  * Soporta las operaciones de añadir un lado y obtener los adyacentes a un
  * nodo.
  */
-class Grafo {
+public class Grafo {
     val nVertices
     get() = ady.size
 
@@ -40,6 +42,20 @@ class Grafo {
         }
 
         return if (v !in ady[node]) ady[node].add(v) else false
+    }
+
+    /**
+     * Agrega un vértice [u] al dígrafo.
+     * 
+     * @return True si el vértice fue agregado exitosamente.
+     *     False si ya existía el vértice en el grafo.
+     */
+    fun agregarVertice(u: Int): Boolean{
+        return if (u !in nodeMap) {
+            ady.add(mutableListOf<Int>())
+            nodeMap[u] = nVertices - 1
+            true
+        } else false
     }
 
     /**
