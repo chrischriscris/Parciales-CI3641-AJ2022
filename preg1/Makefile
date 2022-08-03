@@ -21,7 +21,7 @@ Busqueda.class: Secuencia.class Pila.class Cola.class Busqueda.kt
 MainKt: Main.kt
 	$(KC) $(KFLAGS) . Main.kt
 
-run: MainKt
+run: all
 	kotlin MainKt
 
 clean:

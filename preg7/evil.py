@@ -1,6 +1,5 @@
 from sys import argv
 from flint import *
-from math import frexp
 from numpy import floor
 
 print(
