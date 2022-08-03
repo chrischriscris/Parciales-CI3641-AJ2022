@@ -3,6 +3,9 @@
 latex_src
 ve
 META-INF
+testdir_gigante
+giantvecs
+giantvecs2
 
 # =================== ejecutables y otros ========================
 
@@ -19,6 +22,8 @@ out
 *.class
 *.d
 holamundo
+vecmult
+count_files
 
 # =================== python ========================
 
